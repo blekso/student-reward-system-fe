@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-mono">
       <div className="z-10 w-full max-w-5xl items-center justify-between  text-sm lg:flex">
