@@ -4,20 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { Web3Button } from "@web3modal/react";
 import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
-import ContractABI from "../../../../../abi/ExamplePBT.json";
+//import ContractABI from "../../../../../abi/ExamplePBT.json";
 
 export default function RewardPage() {
-  const { address, isConnecting, isDisconnected } = useAccount();
+  /* const { address, isConnecting, isDisconnected } = useAccount();
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: "0xecb504d39723b0be0e3a9aa33d646642d1051ee1",
     abi: ContractABI,
     functionName: "feed",
-  });
+  }); */
   return (
     <div>
       <Link
         className="z-50 pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-        href="http://localhost:3000"
+        href="http://localhost:3000/items"
       >
         <span className="absolute top-24 left-24 text-2xl text-white transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
           &lt;-
