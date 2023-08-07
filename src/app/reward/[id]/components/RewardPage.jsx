@@ -17,7 +17,7 @@ export default function RewardPage() {
     <div>
       <Link
         className="z-50 pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-        href="http://localhost:3000/items"
+        href={".."}
       >
         <span className="absolute top-24 left-24 text-2xl text-white transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
           &lt;-
