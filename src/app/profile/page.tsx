@@ -14,7 +14,7 @@ function handleLogout() {
 
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     fetchUser();
