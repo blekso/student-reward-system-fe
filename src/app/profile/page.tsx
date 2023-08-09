@@ -17,7 +17,6 @@ export default function Profile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Fetch user data from the backend when the component mounts
     fetchUser();
   }, []);
 
@@ -27,8 +26,7 @@ export default function Profile() {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/test`, {
           headers: {Authorization: `Bearer ${getCookie("accessToken")}`,}
         });
-        console.log(response.data)
-        setUser(response.data); // Assuming the response data contains user information
+        setUser(response.data);
         //setLoading(false);
       } catch (error) {
         console.error('Error fetching user data:', error);

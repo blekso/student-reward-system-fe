@@ -22,7 +22,6 @@ export default function Items() {
   }, []);
 
   const fetchRewards = async () => {
-    console.log(`${ process.env.NEXT_PUBLIC_API_URL}/reward`)
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/reward`, {
         headers: {Authorization: `Bearer ${getCookie("accessToken")}`,}
