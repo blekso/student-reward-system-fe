@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 
 function handleClick() {
-  window.location.href = "https://www.ferit.unios.hr/new-login/?r=https://www.ferit.unios.hr/e-znanstveni-radovi/api/v1/api_jwt.php/login-jwt?path=http://localhost:3001/api/auth/handle-redirect";
+  window.location.href = process.env.NEXT_PUBLIC_AAI_REDIRECT;
 }
 
 export default function Login() {
