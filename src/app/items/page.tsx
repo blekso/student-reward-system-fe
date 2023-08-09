@@ -59,48 +59,54 @@ export default function Items() {
                 "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
             }}
           >
-            odjava
+            Odjava
           </button>
           
       </div>
 
-      <div className="mt-24 grid text-center lg:mb-0 lg:grid-cols-2 gap-8 lg:text-left">
+      <div className={`mt-24 grid text-center lg:mb-0 ${rewards.length > 0 ? 'lg:grid-cols-2' : ''} gap-8 lg:text-left`}>
         {
           isLoading ? (<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-          Loading..
-        </span>) : (<>{rewards.map((reward: any) => (
-        <Link
-          key={reward.id}
-          href={`reward/${reward.id.toString()}`}
-          className="grid grid-cols-2 group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        >
-          <div className="flex items-center justify-center">
-            <Image
-              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
-              src={reward.imageUrl}
-              alt="Next.js Logo"
-              width={120}
-              height={120}
-              priority
-            />
-          </div>
-          
-          <div className="flex flex-col justify-center items-center">
-            <h2 className={`mb-3 text-2xl font-semibold`}>
-            {reward.name}{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            {reward.description}
-          </p>
-        </div>
-      </Link>
-      ))}</>)
-        }
-      
-        
+          Učitavanje..
+        </span>) : 
+        (
+          <>
+            {rewards.length > 0 ? rewards.map((reward: any) => (
+              <Link
+                key={reward.id}
+                href={`reward/${reward.id.toString()}`}
+                className="grid grid-cols-2 group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+              >
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
+                    src={reward.imageUrl}
+                    alt="Next.js Logo"
+                    width={120}
+                    height={120}
+                    priority
+                  />
+                </div>
+                
+                <div className="flex flex-col justify-center items-center">
+                  <h2 className={`mb-3 text-2xl font-semibold`}>
+                  {reward.name}{' '}
+                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                    -&gt;
+                  </span>
+                  </h2>
+                  {
+                    reward.shortDescription ? <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                    {reward.description}
+                  </p> : null
+                  }
+                  
+                </div>
+              </Link>
+            )) : (<>Trenutno nema dostupnih nagrada :(</>)}
+          </>
+        )
+      }
       </div>
     </main>
     {<AuthPageInvisible />}

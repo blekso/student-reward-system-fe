@@ -1,23 +1,19 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { Web3Button } from '@web3modal/react';
-import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-//import ContractABI from "../../../../../abi/ExamplePBT.json";
+import Claim from '../components/Claim';
+import { useParams } from 'next/navigation';
 
 export default function RewardPage() {
-  /* const { address, isConnecting, isDisconnected } = useAccount();
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: "0xecb504d39723b0be0e3a9aa33d646642d1051ee1",
-    abi: ContractABI,
-    functionName: "feed",
-  }); */
-  const [isLoading, setLoading] = useState(true);
+  const { address, isConnecting, isDisconnected } = useAccount();
+  const [isRewardLoading, setLoading] = useState(true);
   const [reward, setReward] = useState(null);
+  const params = useParams();
 
   useEffect(() => {
     // Fetch user data from the backend when the component mounts
@@ -26,10 +22,13 @@ export default function RewardPage() {
 
   const fetchReward = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/reward', {
-        headers: { Authorization: `Bearer ${getCookie('accessToken')}` },
-      });
-      setReward(response.data[0]); // Assuming the response data contains user information
+      const response = await axios.get(
+        `http://localhost:3001/api/reward/${params.id}`,
+        {
+          headers: { Authorization: `Bearer ${getCookie('accessToken')}` },
+        }
+      );
+      setReward(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -37,7 +36,7 @@ export default function RewardPage() {
     }
   };
 
-  if (isLoading) {
+  if (isRewardLoading) {
     return <div>Loading...</div>;
   }
 
@@ -59,22 +58,35 @@ export default function RewardPage() {
             </h2>
           </div>
 
-          <div className="mx-24">
-            <p className="text-2xl tracking-wide leading-loose">
-              {reward.description}
-            </p>
-          </div>
+          {reward.description ? (
+            <div className="mx-24">
+              <p className={`text-xl tracking-wide leading-loose`}>
+                {reward.description}
+              </p>
+            </div>
+          ) : null}
 
           <div className="mx-24">
             <p className="text-2xl tracking-wide leading-loose">
               Reward type: NFT
             </p>
-            <Web3Button />
-            {/* {address ? (
-                <div>
-                    {<Claim signature={signature} blockNumber={blockNumber} />}
+            {!reward.userClaimed ? (
+              <>
+                <Web3Button />
+                {address ? (
+                  <div>
+                    {
+                      <Claim
+                        address={address}
+                        rewardId={reward.id}
+                        claimed={reward.claimed}
+                        txHash={reward.txHash}
+                      />
+                    }
                   </div>
-                  ): null} */}
+                ) : null}
+              </>
+            ) : null}
           </div>
         </main>
       </div>

@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { AuthPageInvisible } from "@/app/lib/protect-page";
-import { deleteCookie } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Image from 'next/image'
 
 function handleLogout() {
   deleteCookie("accessToken")
@@ -23,7 +24,10 @@ export default function Profile() {
   const fetchUser = async () => {
     if(!user){
       try {
-        const response = await axios.get('http://localhost:3001/api/user/test');
+        const response = await axios.get('http://localhost:3001/api/user/test', {
+          headers: {Authorization: `Bearer ${getCookie("accessToken")}`,}
+        });
+        console.log(response.data)
         setUser(response.data); // Assuming the response data contains user information
         //setLoading(false);
       } catch (error) {
@@ -58,13 +62,13 @@ export default function Profile() {
                 "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
             }}
           >
-            odjava
+            Odjava
           </button>
           
       </div>
 
       <div className="mt-24 grid text-center lg:mb-0 gap-24 lg:text-left">
-        <div>
+        <div className="flex flex-col justify-center items-center">
             <h3 className="mb-3 text-xl">Moj uspjeh</h3>
             {user ? (
               <div> 
@@ -73,9 +77,40 @@ export default function Profile() {
                 </div>
               ) : null}
         </div>
-        <div>
+        <div className="flex flex-col justify-center items-center">
             <h3 className="mb-3 text-xl">Preuzete nagrade</h3>
-            {user ? (<></>) : null}
+            {user?.claims?.length > 0 ? user?.claims?.map((claim: any) => (
+              <Link
+                key={claim.reward.id}
+                href={`reward/${claim.reward.id.toString()}`}
+                className="grid grid-cols-2 group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+              >
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
+                    src={claim.reward.imageUrl}
+                    alt="Next.js Logo"
+                    width={120}
+                    height={120}
+                    priority
+                  />
+                </div>
+                
+                <div className="flex flex-col justify-center items-center">
+                  <h2 className={`mb-3 text-2xl font-semibold`}>
+                  {claim.reward.name}{' '}
+                  <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                    -&gt;
+                  </span>
+                  </h2>
+                  {
+                    claim.reward.shortDescription ? <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
+                    {claim.reward.shortDescription}
+                  </p> : null
+                  }
+                </div>
+              </Link>
+            )) : (<>Trenutno nema dostupnih nagrada :(</>)}
         </div>
       </div>
 
