@@ -6,14 +6,16 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Link from 'next/link';
 
-const Claim = ({address, rewardId, claimed, txHash}) => {
+type Props = {contractAddress: any, rewardId: number, claimed: boolean, txHash: string}
+
+const Claim = ({contractAddress, rewardId, claimed, txHash}: Props) => {
   const { config } = usePrepareContractWrite({
-    address: '0x84537610cf1e46dC5d255712314f0c5164F12F40',
+    address: contractAddress,
     abi: Contract.abi,
     functionName: 'claim',
-    args: [address]
   })
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+
+  const { data, isSuccess, write } = useContractWrite(config)
   const transactionURL = `https://mumbai.polygonscan.com/tx/${data?.hash ?? txHash}`
 
   useEffect(() => {
@@ -24,15 +26,13 @@ const Claim = ({address, rewardId, claimed, txHash}) => {
 
   const postClaim = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/claim', {
+      return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/claim`, {
         "userAai": "test",
         "txHash": data?.hash,
         "rewardId": rewardId
       },{
         headers: { Authorization: `Bearer ${getCookie('accessToken')}` },
       });
-
-      console.log(response.data)
     } catch (error) {
       console.error('Error on post claim:', error);
     }
@@ -41,18 +41,9 @@ const Claim = ({address, rewardId, claimed, txHash}) => {
 
   return (
   <div>
-    {!isSuccess && claimed ? 
-    (
-      <div >
-        {claimed ? <p className="info">Nagrada je već preuzeta.</p> : <p className="info">Uspješno preuzimanje!</p>}
-        <div>
-            <Link href={transactionURL} target={"_blank"}><button>Pogledaj transakciju</button></Link>
-          </div>
-      </div>
-    ) : (
-      <button
-      onClick={() => write?.()}
-          className="mb-3 w-32 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+    {!isSuccess && !claimed ? <button
+        onClick={() => write?.()}
+          className="mb-3 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
           type="button"
           style={{
             background:
@@ -60,12 +51,33 @@ const Claim = ({address, rewardId, claimed, txHash}) => {
           }}
         >
           Preuzmi Nagradu
-        </button>
-    )}
+        </button> : isSuccess && !claimed ? (
+          <> 
+            <p className="info">Uspješno preuzimanje!</p>
+            <Link href={transactionURL} target={"_blank"}><button className="mb-3 w-32 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+            type="button"
+            style={{
+              background:
+                "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
+            }}>Pogledaj transakciju</button></Link>
+          </>
+        ) : null}
+    {claimed ? 
+      (
+        <div >
+          {claimed ? <p className="info">Nagrada je već preuzeta.</p> : null}
+          <div>
+              <Link href={transactionURL} target={"_blank"}><button className="mb-3 w-32 inline-block rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+            type="button"
+            style={{
+              background:
+                "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
+            }}>Pogledaj transakciju</button></Link>
+            </div>
+        </div>
+      ) : null}
   </div>
   )
-    
-  
 }
 
 export default Claim

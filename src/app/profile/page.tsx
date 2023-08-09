@@ -24,7 +24,7 @@ export default function Profile() {
   const fetchUser = async () => {
     if(!user){
       try {
-        const response = await axios.get('http://localhost:3001/api/user/test', {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/test`, {
           headers: {Authorization: `Bearer ${getCookie("accessToken")}`,}
         });
         console.log(response.data)
@@ -83,7 +83,7 @@ export default function Profile() {
               <Link
                 key={claim.reward.id}
                 href={`reward/${claim.reward.id.toString()}`}
-                className="grid grid-cols-2 group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+                className="grid grid-cols-2 max-w-lg group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
               >
                 <div className="flex items-center justify-center">
                   <Image
@@ -96,7 +96,7 @@ export default function Profile() {
                   />
                 </div>
                 
-                <div className="flex flex-col justify-center items-center">
+                <div>
                   <h2 className={`mb-3 text-2xl font-semibold`}>
                   {claim.reward.name}{' '}
                   <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
@@ -110,7 +110,7 @@ export default function Profile() {
                   }
                 </div>
               </Link>
-            )) : (<>Trenutno nema dostupnih nagrada :(</>)}
+            )) : (<>Nema preuzetih nagrada</>)}
         </div>
       </div>
 

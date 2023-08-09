@@ -1,12 +1,9 @@
 "use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { Web3Button, Web3Modal } from '@web3modal/react'
-import { configureChains, createConfig, useAccount, useContractWrite, usePrepareContractWrite, WagmiConfig } from 'wagmi'
+import { Web3Modal } from '@web3modal/react'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
-//import ContractABI from "../../../../abi/ExamplePBT.json";
 import RewardPage from "./components/RewardPage";
 import { AuthPageInvisible } from "@/app/lib/protect-page";
 
