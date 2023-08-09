@@ -36,7 +36,7 @@ export default function Items() {
   
    return (
     <>
-      <main className="flex min-h-screen flex-col items-center p-24 font-mono">
+      <main className="flex min-h-screen flex-col items-center md:p-24 p-8 font-mono">
       <div className="z-10 w-full max-w-5xl items-center justify-between text-sm flex">
           <div className="grid lg:grid-cols-2 gap-8">
             <Link href="items">
@@ -64,7 +64,7 @@ export default function Items() {
           
       </div>
 
-      <div className={`mt-24 grid text-center lg:mb-0 ${rewards.length > 0 ? 'lg:grid-cols-2' : ''} gap-8 lg:text-left`}>
+      <div className={`md:mt-24 mt-8 grid text-center lg:mb-0 ${rewards.length > 0 ? 'lg:grid-cols-2' : ''} gap-8 lg:text-left`}>
         {
           isLoading ? (<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
           Učitavanje..
@@ -75,15 +75,15 @@ export default function Items() {
               <Link
                 key={reward.id}
                 href={`reward/${reward.id.toString()}`}
-                className="grid grid-cols-2 max-w-lg group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+                className="grid md:grid-cols-2 gap-4 border-2 border-gray-300 max-w-lg group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
               >
                 <div className="flex items-center justify-center">
                   <Image
                     className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
                     src={reward.imageUrl}
                     alt="Next.js Logo"
-                    width={120}
-                    height={120}
+                    width={320}
+                    height={320}
                     priority
                   />
                 </div>
