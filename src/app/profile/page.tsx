@@ -88,13 +88,13 @@ export default function Profile() {
                     className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
                     src={claim.reward.imageUrl}
                     alt="Next.js Logo"
-                    width={320}
-                    height={320}
+                    width={200}
+                    height={200}
                     priority
                   />
                 </div>
                 
-                <div>
+                <div className="flex flex-col justify-center">
                   <h2 className={`mb-3 text-2xl font-semibold`}>
                   {claim.reward.name}{' '}
                   <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">

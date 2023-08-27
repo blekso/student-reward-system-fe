@@ -14,7 +14,7 @@ function handleLogout() {
 
 export default function Items() {
   const [isLoading, setLoading] = useState(true);
-  const [rewards, serRewards] = useState([]);
+  const [rewards, setRewards] = useState([]);
 
   useEffect(() => {
     // Fetch user data from the backend when the component mounts
@@ -26,7 +26,7 @@ export default function Items() {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/reward`, {
         headers: {Authorization: `Bearer ${getCookie("accessToken")}`,}
       });
-      serRewards(response.data); // Assuming the response data contains user information
+      setRewards(response.data); // Assuming the response data contains user information
       setLoading(false);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -82,13 +82,13 @@ export default function Items() {
                     className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
                     src={reward.imageUrl}
                     alt="Next.js Logo"
-                    width={320}
-                    height={320}
+                    width={200}
+                    height={200}
                     priority
                   />
                 </div>
                 
-                <div>
+                <div className="flex flex-col justify-center">
                   <h2 className={`mb-3 text-2xl font-semibold`}>
                   {reward.name}{' '}
                   <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
